@@ -15,11 +15,11 @@ library(ggplot2)
 
 ```{r diamon_rename}
 diamonds <- diamonds %>% rename(
-    depth = depth_pct,
-    x = length_mm,
-    y = width_mm,
-    z = depth_mm,
-    table = table_pct
+    depth_pct = depth,
+    length_mm = x,
+    width_mm = y,
+    depth_mm = z,
+    table_pct = table
   )
 ```
 
@@ -60,9 +60,11 @@ ggplot(data = df1, mapping = aes( x = price)) +
 diamonds <- diamonds %>%
   mutate(table_mm = table_pct * width_mm / 100)
 
+
 # Overall table_mm arithmetic mean?
 
-
+arth_mean <- diamonds %>% select(table_mm) %>% map_dbl(mean)
+arth_mean
 
 
 
@@ -70,13 +72,21 @@ diamonds <- diamonds %>%
 # table_mm arithmetic mean within each clarity category
 
 
+arth_mean_tabvar <- diamonds %>%
+  select(clarity, table_mm) %>%
+  group_by(clarity) %>%
+  summarise(mean = mean(table_mm))
+arth_mean_tabvar
 
 
+ggplot(data = arth_mean_tabvar, mapping = 
+         aes(x = mean, y = clarity)) +
+  geom_point()
 
 
 ```
 
-_Add your comment here_
+_Mean table size in mm decreases with clarity_
 
 ## Exercise 3
 
