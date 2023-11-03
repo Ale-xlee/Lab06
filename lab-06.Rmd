@@ -15,11 +15,11 @@ library(ggplot2)
 
 ```{r diamon_rename}
 diamonds <- diamonds %>% rename(
-    depth_pct = depth,
-    length_mm = x,
-    width_mm = y,
-    depth_mm = z,
-    table_pct = table
+    depth = depth_pct,
+    x = length_mm,
+    y = width_mm,
+    z = depth_mm,
+    table = table_pct
   )
 ```
 
@@ -29,7 +29,25 @@ diamonds <- diamonds %>% rename(
 ```{r}
 # Do some preliminary investigations & cleaning
 
+df1 <- diamonds %>% select(price, carat, clarity, cut)
 
+ggplot(data = df1, mapping = aes(x = carat, y = price, color = clarity)) +
+  geom_point(alpha = 0.3) + theme_bw() +
+  xlab("Carat") +
+  ylab("Price, USD") +
+  guides(color = guide_legend(title = "Diamond Clarity"))
+
+ggplot(data = df1, mapping = aes(x = cut, fill = clarity)) +
+  geom_bar(alpha = 0.5) + theme_bw() +
+  xlab("Cut of Diamond") +
+  ylab("Number of Round Cut Diamonds") +
+  guides(color = guide_legend(title = "Price, USD"))
+
+ggplot(data = df1, mapping = aes( x = price)) +
+  geom_histogram(fill = "#ADD8E6") + 
+  theme_bw() +
+  xlab("Price of Diamond, USD") +
+  ylab("Number of Round Cut Diamonds") 
 
 
 ```
